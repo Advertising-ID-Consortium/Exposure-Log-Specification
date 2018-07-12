@@ -1,8 +1,6 @@
 ---
-layout: post
-title: Measurement Consortium
-date: '2018-07-11 13:30'
-version: 0.1
+date: '2018-07-11 18:15'
+version: 0.2
 ---
 
 # Context
@@ -23,55 +21,55 @@ Measurement log files are provided in a tab-separated, gzipped format. The files
 
 Values of the variables in the filename may contain letters, integers and ASCII special characters (except for underscores, periods and whitespace).
 
-`SourceDSP_Advertiser_Version_CreationTimestamp_Part.tsv.gz`
+`SourcePlatform_Consumer_Version_CreationTimestamp_Part.tsv.gz`
 
 Name  |Definition   |Example  
 --|---|--
-SourceDSP|The DSP that produced the log.|`The-Trade-Desk`  
-Advertiser|A description of the advertisers to which the measurement data relates.   |`Recreation-Equipment-Inc`  
+SourcePlatform|The DSP or SSP that produced the log.|`The-Trade-Desk`  
+Consumer|A description of the consumer to which the measurement data relates.   |`Recreation-Equipment-Inc`  
 Version  |The Coalition measurement format version   | 0-1  
 CreationTimestamp|The [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5) date-time, in UTC time.   |`2018-07-05T20:43:52Z`  
 Part|The "chunk" of a split, 500MB+ file.   |`2`  
 
+## File Contents for Advertiser Logs
+All events types should be written to a single feed, if possible. Both OpenAdIds and IDLs are required in the feed if either existed at the time of the bid request.
 
-## File Contents
-Both impressions and click events should be written to a single feed, if possible. Both OpenAdIds and IDLs are required in the feed if either existed at the time of the bid request.
-
-Name  |Description   |Example   |Valid Values   |Required  
+Name  |Description   |Example   |Valid Values   |Required - DSP | Required - SSP  
 --|---|---|---|--
-IDL|The platform-encoded LiveRamp IdentityLink|`Xi1377...`||No*
-Open_AdID|A supported Open_AdID device identifier, including IDFA or AAID if relevant.|`098d35af-fa02-4677-ba50-eb6a62e565e5`|| No*
-Open_AdID|The type of OpenAdId.|`The Trade Desk`|`The Trade Desk`, `AppNexus`, `Digitrust`|No*
-Timestamp|	A timestamp given in [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5) date-time, in UTC.|`2018-07-05T20:43:52Z`||Yes
-Country|The country the event originated in, in [ISO 3166 ALPHA2](https://en.wikipedia.org/wiki/ISO_3166-2) format.|`US`||Yes*
-Region|	The subdivision of the country, also found in ISO 3166.|`US-CA`||Yes*
-DMA|	The DMA name where the event originated.|`Sacramento-Stockton-Modesto`||Yes*
-User Agent|	The user agent presented by the device in the request header.|`Mozilla/5.0 (Linux; Android 7.1.1; SM-T550 Build/NMF26X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Safari/537.36`||Yes
-Browser Language  |The browser language defined in the Accept-Language header.   |`    en-US,en;q=0.5`   |   |  Yes
-Advertiser|	The advertiser buying media.|`Gap Inc.`|DSP-Defined|Yes
-Agency|	The agency (potentially) acting on behalf of the advertiser.| 	`Publicis`|DSP-defined|No
-Campaign|	The specific campaign in play.|`FALL_MARKET_PROMO`|DSP-Defined|Yes
-Domain|	The publisher domain on which the inventory existed.| `eventbrite.com`| Any publisher hostname, without protocol or path.|Yes
-Event Type|	The action / event that took place. |`View`|`View`,`Click`|Yes
-Inventory Type|	The ad unit.|`Banner`|Any valid [RTB2.0](https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf) impression object type.|Yes
-Inventory Specs|	The attributes of the inventory.|`{"w":300,"h":200}`|Attributes specified in [RTB2.0](https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf), described in JSON format|Yes
-Creative|	The name of the creative asset that was served	|`OrganicNoGMO_FY19`|DSP-Defined|Yes
-Exchange|	The exchange that provided the inventory.|`AppNexus`|DSP-Defined|No
-Event Type|	The type of data record.| `Impression`|`Impression`,`Click`,`Conversion`|Yes
-ID|	An ID to refer to the specific impression or click record.| `5465465468463`|DSP-Defined|Yes
-DealID|The PMP identified used in the auction.|`abc001`|DSP-Defined|No
-Winning Bid  | The bid that won the auction, passed to the DSP via a macro.  | $0.17  | Must contain currency, zero-padded dollars and cents. |  No
-Extension|An optional field to add additional information.|`{"viewability_score":80}`|Any valid JSON object.|No
+IDL|The LiveRamp IdentityLink, either encrypted or encoded.|`Xi1377...`||No*|No*
+Open_AdID|A supported Open_AdID device identifier, including IDFA or AAID if relevant.|`098d35af-fa02-4677-ba50-eb6a62e565e5`|| No*| No*
+Open_AdID|The type of OpenAdId.|`The Trade Desk`|`The Trade Desk`, `AppNexus`, `Digitrust`|No*| No*
+Timestamp|	A timestamp given in [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5) date-time, in UTC.|`2018-07-05T20:43:52Z`||Yes|Yes
+Country|The country the event originated in, in [ISO 3166 ALPHA2](https://en.wikipedia.org/wiki/ISO_3166-2) format.|`US`||Yes*|Yes*
+Region|	The subdivision of the country, also found in ISO 3166.|`US-CA`||Yes*|Yes*
+DMA|	The DMA name where the event originated.|`Sacramento-Stockton-Modesto`||Yes*|Yes*
+Device_Type  |The device type as interpreted by parsing the User Agent with a [ua-parser](https://github.com/ua-parser)-compatible library.| `iPad`  | Any value of `device.family`.  |Yes|Yes
+OS_Type  |The operating system as interpreted by parsing the User Agent with a [ua-parser](https://github.com/ua-parser)-compatible library.   |`iOS 5.1`   | Value of `os.family + ' ' + os.major+'.'os.minor+'.'os.patch`. "None" values should be excluded.  |Yes|Yes
+Browser_Type  |The browser name as interpreted by parsing the User Agent with a [ua-parser](https://github.com/ua-parser)-compatible library.  |`UC Browser`   | Value of `user_agent.family`.   |Yes|Yes
+Browser_Version  |The specific release of the browser, as interpreted by parsing the User Agent. Major, minor and patch versions should be concatenated. |`3.4.3 `   |Value of `user_agent.major+'.'+user_agent.minor+'.'+user_agent.patch` "None" values should be excluded. |Yes|Yes
+Browser Language  |The browser language defined in the Accept-Language header.   |`    en-US,en;q=0.5`   | Any string passed in the HTTP header.  |  Yes|Yes
+Advertiser|	The advertiser buying media.|`Gap Inc.`|Platform-Defined|Yes|No*
+Agency|	The agency (potentially) acting on behalf of the advertiser.|	`Publicis`|Platform-Defined|No|No
+Campaign|	The specific campaign in play.|`FALL_MARKET_PROMO`|Platform-Defined|Yes|No*
+Domain|	The publisher domain on which the inventory existed.| `eventbrite.com`| Any publisher hostname, without protocol or path.|Yes|Yes
+Event Type|	The action / event that took place. |`View`|`View`,`Click`,`Bid`,`Conversion`|Yes|Yes
+Inventory Type|	The ad unit.|`Banner`|Any valid [RTB2.0](https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf) impression object type.|Yes|Yes
+Inventory Specs|	The attributes of the inventory.|`{"w":300,"h":200}`|Attributes specified in [RTB2.0](https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf), described in JSON format|Yes|Yes
+Creative|	The name of the creative asset that was served	|`OrganicNoGMO_FY19`|Platform-Defined|Yes|No
+Exchange|	The exchange that provided the inventory.|`AppNexus`|Platform-Defined|No|No
+ID|	An ID to refer to the specific impression or click record.| `5465465468463`|Platform-Defined|Yes|Yes
+DealID|The PMP identified used in the auction.|`abc001`|Platform-Defined|No|No
+Winning Bid  | The bid that won the auction, passed to the DSP via a macro.  | $0.17  | Must contain currency, zero-padded dollars and cents. |  No|No
+Extension|An optional field to add additional information.|`{"viewability_score":80}`|Any valid JSON object.|No|No
 
 * required when available.
 
+## File Contents for Publisher Logs
+TBD.
+
 ## File Delivery
-Files will be delivered hourly to an Amazon S3 bucket. While the bucket may be owned by a DSP or directly by an advertiser, the advertiser is responsible for all storage costs incurred from usage of the bucket. Expiration policies must be set to not sooner than seven days from data delivery.
+Files will be delivered hourly to an Amazon S3 bucket. While the bucket may be owned by a platform or directly by an consumer, the consumer is responsible for all storage costs incurred from usage of the bucket. Expiration policies must be set to not sooner than seven days from data delivery.
 
 # Example
 
 See a [sample]() file.
-
-# Future Enhancements
-- Firehose API to pull logs in realtime.
-- SSP logs?
