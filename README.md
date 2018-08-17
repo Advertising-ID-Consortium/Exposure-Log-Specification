@@ -35,9 +35,9 @@ Part|The "chunk" of a split, 500MB+ file.   |`2`
 All events types should be written to a single feed, if possible. Both OpenAdIds and IDLs are required in the feed if either existed at the time of the bid request.
 
 Name  |Description   |Example   |Valid Values   |Required - DSP | Required - SSP  
---|---|---|---|--
+--|---|---|---|---|--
 Cross_Device_ID|The cross-device identifier.|`Xi1377...`||No*|No*
-Cross_Device_ID_Type  |The type of cross-device ID.   |`IDL`   |`IDL`   |No*   |No*  
+Cross_Device_ID_Type|The type of cross-device ID.|`IDL`|`IDL`|No*|No*  
 Open_AdID|A supported Open_AdID device identifier, including IDFA or AAID if relevant.|`098d35af-fa02-4677-ba50-eb6a62e565e5`|| No*| No*
 Open_AdID_Type|The type of OpenAdId.|`The Trade Desk`|`The Trade Desk`, `AppNexus`, `Digitrust`|No*| No*
 Timestamp|	A timestamp given in [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5) date-time, in UTC.|`2018-07-05T20:43:52Z`||Yes|Yes
